@@ -20,3 +20,7 @@ cd ${PROJECT_DIRECTORY}
 composer install
 vendor/bin/phpunit test
 ```
+
+## Contributing
+
+Did you find a bug? Feel free to open an [issue](https://github.com/tkegan/PackagistClient/issues). Got a fix or an enhancement coded up? Yeah I'd like a look; please open a [pull request](https://github.com/tkegan/PackagistClient/pulls).
