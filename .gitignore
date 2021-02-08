@@ -1,0 +1,2 @@
+# third party libraries used only for testing... we manage these with composer
+/vendor/
