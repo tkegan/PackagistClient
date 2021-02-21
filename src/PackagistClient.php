@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace TomEganTech\PackagistClient;
 
+use BadFunctionCallException;
 use DateTime;
 use RuntimeException;
 
@@ -25,6 +26,8 @@ class PackagistClient {
 	public const LIST_PACKAGES_URL = 'https://packagist.org/packages/list.json';
 
 	public const LIST_SECURITY_ADVISORIES_URL = 'https://packagist.org/api/security-advisories';
+
+	public const SEARCH_URL = 'https://packagist.org/search.json';
 
 	/**
 	 * The http request we use for making requests to the REST API
@@ -157,5 +160,67 @@ class PackagistClient {
 			'PackagistAPI did not respond as expected',
 			$response->getStatusCode()
 		);
+	}
+
+	/**
+	 * Search for packages
+	 *
+	 * @todo what to we do about results being paginated?
+	 *
+	 * @param string|null $term  Search for packages including the search term
+	 *      in their metadata. Specify null (the default) to search for package
+	 *      regardless of a term.
+	 * @param string|null $tag  Search for packages with this tag. Specify null
+	 *      (the default) to disregard package tags.
+	 * @param string|null $type  Search for packages of this type. Specify null
+	 *      (the default) to search for packages of all types.
+	 * @throws BadFunctionCallException if none of $term, $tag or $type are
+	 *      specified.
+	 * @return PackageDescription[]  A list of package descriptions matching the
+	 *      search.
+	 */
+	public function searchPackages(
+		?string $term = null,
+		?string $tag = null,
+		?string $type = null
+	) {
+		$url = self::SEARCH_URL;
+		$query = [];
+
+		if(null !== $term && 0 < strlen($term)) {
+			$query['q'] = $term;
+		}
+
+		if(null !== $tag && 0 < strlen($tag)) {
+			$query['tags'] = $tag;
+		}
+
+		if(null !== $type && 0 < strlen($type)) {
+			$query['type'] = $type;
+		}
+
+		if(empty($query)) {
+			BadFunctionCallException('A search term, tag or package type must be specified');
+		}
+
+		$response = $this->getClient()->get($url, [
+			'query' => $query
+		]);
+		
+		if(200 === $response->getStatusCode()) {
+			$body = (string) $response->getBody();
+			$data = json_decode($body, true);
+			if(is_array($data) && array_key_exists('results', $data)) {
+				return array_map(function ($result) {
+					return new PackageDescription();
+				}, $data['results']);
+			}
+		}
+
+		throw new RuntimeException(
+			'PackagistAPI did not respond as expected',
+			$response->getStatusCode()
+		);
+
 	}
 }

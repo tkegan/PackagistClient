@@ -1,8 +1,9 @@
 {
-    "name": "tomegan.tech/packagist-client",
+    "name": "tomegantech/packagist-client",
     "description": "Client for working with the Packagist.org REST API",
     "type": "library",
     "require": {
+        "php": ">=7.0",
         "guzzlehttp/guzzle": "^7.2",
         "ext-json": "*"
     },

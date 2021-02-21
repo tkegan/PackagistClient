@@ -19,7 +19,7 @@ use InvalidArgumentException;
  * A data type encapsulating a security advisory
  */
 class SecurityAdvisory {
-	/** The properties data arrays to fromArray() must contain */
+	/** The properties data arrays passed to fromArray() must contain */
 	const REQUIRED_PROPERTIES = [
 		'packageName',
 		'remoteId',

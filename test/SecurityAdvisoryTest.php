@@ -9,8 +9,6 @@
 
 declare(strict_types=1);
 
-use DateTime;
-
 use PHPUnit\Framework\TestCase;
 
 use TomEganTech\PackagistClient\SecurityAdvisory;
@@ -58,18 +56,6 @@ final class SecurityAdvisoryTest extends TestCase {
 
 	/** Test creating instances from data array */
 	public function testFromArray() {
-		$data = [
-			'packageName' => 'monolog/monolog',
-			'remoteId' => 'monolog/monolog/2014-12-29-1.yaml',
-			'title' => 'Header injection in NativeMailerHandler',
-			'link' => 'https://github.com/Seldaek/monolog/pull/448#issuecomment-68208704',
-			'cve' => 'CVE-2014-00000',
-			'affectedVersions' => '>=1.8.0,<1.12.0',
-			'source' => 'FriendsOfPHP/security-advisories',
-			'reportedAt' => '2014-12-29 00:00:00',
-			'composerRepository' => 'https://packagist.org'
-		];
-
 		$packageName = 'monolog/monolog';
 		$remoteId = 'monolog/monolog/2014-12-29-1.yaml';
 		$title = 'Header injection in NativeMailerHandler';
@@ -79,6 +65,18 @@ final class SecurityAdvisoryTest extends TestCase {
 		$reportedAt = new DateTime('2014-12-29 00:00:00');
 		$composerRepository = 'https://packagist.org';
 		$cve = 'CVE-2014-00000';
+
+		$data = [
+			'packageName' => $packageName,
+			'remoteId' => $remoteId,
+			'title' => $title,
+			'link' => $link,
+			'cve' => $cve,
+			'affectedVersions' => $affectedVersions,
+			'source' => $source,
+			'reportedAt' => $reportedAt->format('Y-m-d H:i:s'),
+			'composerRepository' => $composerRepository
+		];
 
 		$advisory = SecurityAdvisory::fromArray($data);
 

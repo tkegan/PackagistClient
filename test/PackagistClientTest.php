@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 use GuzzleHttp\Client as HttpClient;
 
+use TomEganTech\PackagistClient\PackageDescription;
 use TomEganTech\PackagistClient\PackagistClient;
 use TomEganTech\PackagistClient\SecurityAdvisory;
 
@@ -56,5 +57,29 @@ final class PackagistClientTest extends TestCase {
 		self::assertIsArray($advisories);
 		self::assertNotEmpty($advisories);
 		self::assertContainsOnlyInstancesOf(SecurityAdvisory::class, $advisories);
+	}
+
+	/** Test that we can search for packages by search term */
+	public function testSearchForPackage() {
+		$packages = self::$client->searchPackages('monolog');
+		self::assertIsArray($packages);
+		self::assertNotEmpty($packages);
+		self::assertContainsOnlyInstancesOf(PackageDescription::class, $packages);
+	}
+
+	/** Test that we can search for packages by search tag */
+	public function testSearchForPackageByTag() {
+		$packages = self::$client->searchPackages(null, 'psr-3');
+		self::assertIsArray($packages);
+		self::assertNotEmpty($packages);
+		self::assertContainsOnlyInstancesOf(PackageDescription::class, $packages);
+	}
+
+	/** Test that we can search for packages by search type */
+	public function testSearchForPackageByType() {
+		$packages = self::$client->searchPackages(null, null, 'composer-plugin');
+		self::assertIsArray($packages);
+		self::assertNotEmpty($packages);
+		self::assertContainsOnlyInstancesOf(PackageDescription::class, $packages);
 	}
 }

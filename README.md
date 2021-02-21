@@ -4,6 +4,8 @@
 
 A client library for working with the Packagist REST API in PHP.
 
+Please note that this library is being provided to you not by the folks behind [Pakagist.org](https://packagist.org/) but by some one who read the API docs and thought it would be useful to have a library to ease making use of the API. As such this library is not endorsed by Packagist and is liable to break if Packagist changes their API.
+
 ## Author
 
 Tom Egan <tom@tomegan.tech>
